@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './Style/App.css';
+import RechercheReservation from "./components/Reservation/RechercheReservation";
+import RechercheClient from "./components/Client/RechercheClient";
 
 function App() {
+  const [showReservation, setShowReservation] = useState(false); // State for RechercheReservation
+  const [showClient, setShowClient] = useState(false); // State for RechercheClient
+
+  const toggleRechercheReservation = () => {
+    setShowReservation((prev) => !prev); // Toggle RechercheReservation
+    setShowClient(false); // Hide RechercheClient
+  };
+
+  const toggleRechercheClient = () => {
+    setShowClient((prev) => !prev); // Toggle RechercheClient
+    setShowReservation(false); // Hide RechercheReservation
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <button onClick={toggleRechercheReservation}>
+        {showReservation ? 'Masquer Recherche Réservation' : 'Afficher Recherche Réservation'}
+      </button>
+      <button onClick={toggleRechercheClient}>
+        {showClient ? 'Masquer Recherche Client' : 'Afficher Recherche Client'}
+      </button>
+
+      {showReservation && <RechercheReservation />}
+      {showClient && <RechercheClient />}
+    </>
   );
 }
 
