@@ -19,6 +19,7 @@ function Inscription() {
 
   return (
     <div className="inscription">
+      <p>Veuillez compléter le formulaire suivant :</p> 
       <form onSubmit={handleSubmit}>
         <div className="input-field">
           <div className="icon-container">
