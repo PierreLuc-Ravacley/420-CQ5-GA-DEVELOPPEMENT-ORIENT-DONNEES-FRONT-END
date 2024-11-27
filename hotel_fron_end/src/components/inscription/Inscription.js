@@ -6,11 +6,11 @@ function Inscription() {
   const [prenom, setPrenom] = useState("");
   const [adresse, setAdresse] = useState("");
   const [telephone, setTelephone] = useState("");
-  const [email, setEmail] = useState(""); // État pour l'email
+  const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [confirmationMotDePasse, setConfirmationMotDePasse] = useState("");
   const [acceptTermes, setAcceptTermes] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); // État pour les messages d'erreur
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,7 +19,6 @@ function Inscription() {
     const existingEmails = ["test@example.com"]; // Simule des emails existants
     const existingTelephones = ["0123456789"]; // Simule des numéros de téléphone existants
 
-    // Vérification des champs obligatoires
     if (!nom || !prenom || !adresse || !telephone || !email || !motDePasse || !confirmationMotDePasse) {
       setErrorMessage("Veuillez remplir tous les champs.");
       return;
@@ -46,8 +45,12 @@ function Inscription() {
     }
 
     setErrorMessage(""); // Réinitialiser les messages d'erreur
-    console.log("Formulaire envoyé !");
-    // logique pour envoyer les données à le backend
+
+    // Message de confirmation
+    window.alert("Votre compte a été créé avec succès !");
+
+    // Redirection vers la page d'accueil
+    window.location.href = "/";
   };
 
   return (
@@ -100,7 +103,7 @@ function Inscription() {
         </div>
         <div className="input-field">
           <div className="icon-container">
-            <i className="fas fa-envelope"></i> {/* Icône pour l'email */}
+            <i className="fas fa-envelope"></i>
           </div>
           <input 
             type="email" 
@@ -116,7 +119,8 @@ function Inscription() {
           <input 
             type="password" 
             placeholder="Mot de passe" 
-            value={motDePasse} onChange={(event) => setMotDePasse(event.target.value)} 
+            value={motDePasse} 
+            onChange={(event) => setMotDePasse(event.target.value)} 
           />
         </div>
         <div className="input-field">
@@ -130,7 +134,7 @@ function Inscription() {
             onChange={(event) => setConfirmationMotDePasse(event.target.value)} 
           />
         </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Affichage du message d'erreur */}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <div className="checkbox-field">
           <input 
             type="checkbox" 
