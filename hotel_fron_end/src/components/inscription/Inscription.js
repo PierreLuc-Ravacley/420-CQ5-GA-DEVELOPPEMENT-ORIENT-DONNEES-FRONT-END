@@ -19,6 +19,12 @@ function Inscription() {
     const existingEmails = ["test@example.com"]; // Simule des emails existants
     const existingTelephones = ["0123456789"]; // Simule des numéros de téléphone existants
 
+    // Vérification des champs obligatoires
+    if (!nom || !prenom || !adresse || !telephone || !email || !motDePasse || !confirmationMotDePasse) {
+      setErrorMessage("Veuillez remplir tous les champs.");
+      return;
+    }
+
     if (existingEmails.includes(email)) {
       setErrorMessage("Cet email est déjà utilisé.");
       return;
@@ -31,6 +37,11 @@ function Inscription() {
 
     if (motDePasse !== confirmationMotDePasse) {
       setErrorMessage("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
+    if (!acceptTermes) {
+      setErrorMessage("Vous devez accepter les termes et conditions.");
       return;
     }
 
@@ -105,12 +116,11 @@ function Inscription() {
           <input 
             type="password" 
             placeholder="Mot de passe" 
-            value={motDePasse} 
-            onChange={(event) => setMotDePasse(event.target.value)} 
+            value={motDePasse} onChange={(event) => setMotDePasse(event.target.value)} 
           />
         </div>
         <div className="input-field">
-          <div class ="icon-container">
+          <div className="icon-container">
             <i className="fas fa-lock"></i>
           </div>
           <input 
