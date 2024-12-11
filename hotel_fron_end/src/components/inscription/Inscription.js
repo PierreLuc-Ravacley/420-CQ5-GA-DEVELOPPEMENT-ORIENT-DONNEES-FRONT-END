@@ -53,7 +53,7 @@ function Inscription() {
     window.alert("Votre compte a été créé avec succès !");
 
     // Redirection vers la page d'accueil
-    navigate("/login");
+    navigate("/");
   };
 
   return (
