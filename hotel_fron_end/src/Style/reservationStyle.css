@@ -12,6 +12,7 @@
   right: 0;
   height: 10vh;
   z-index: 10;
+  box-sizing: border-box; 
 }
 
 /* Logo Styling */
@@ -52,7 +53,8 @@
 
 /* Main Section Padding */
 main {
-  padding-top: 20vh;
+  margin-top: 75vh; 
+  padding: 2vw; 
 }
 
 /* Dashboard Container */
@@ -207,4 +209,44 @@ main {
     flex-direction: column;
     align-items: center;
   }
+}
+/* Add Reservation Form Styling */
+.add-reservation-form {
+  max-width: 70vw; /* Limite la largeur du formulaire */
+  margin: 4vh auto; /* Centre le formulaire avec un espacement vertical (ajout de 4vh en haut) */
+  padding: 2vw; /* Espacement interne */
+  background-color: rgba(255, 255, 255, 0.9); /* Couleur de fond */
+  border-radius: 10px; /* Coins arrondis */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre pour le formulaire */
+}
+
+.add-reservation-form h2 {
+  font-size: 1.5rem; /* Taille de la police pour le titre */
+  margin-bottom: 1vh; /* Espacement en bas du titre */
+  text-align: center; /* Centrer le titre */
+}
+
+.add-reservation-form input {
+  width: 100%; /* Prend toute la largeur disponible */
+  padding: 1vw; /* Espacement interne */
+  margin-bottom: 1vh; /* Espacement en bas de chaque champ */
+  border: 1px solid #ccc; /* Bordure grise */
+  border-radius: 5px; /* Coins arrondis pour les champs */
+  font-size: 1rem; /* Taille de la police */
+}
+
+.add-reservation-form button {
+  width: 100%; /* Prend toute la largeur disponible */
+  padding: 1vw; /* Espacement interne */
+  background-color: #007bff; /* Couleur de fond du bouton */
+  color: white; /* Couleur du texte */
+  border: none; /* Pas de bordure */
+  border-radius: 5px; /* Coins arrondis */
+  cursor: pointer; /* Curseur en main */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Effet de transition */
+}
+
+.add-reservation-form button:hover {
+  background-color: #0056b3; /* Couleur de fond au survol */
+  transform: scale(1.05); /* Légère augmentation de la taille au survol */
 }
