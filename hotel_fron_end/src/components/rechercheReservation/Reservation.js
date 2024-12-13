@@ -24,7 +24,7 @@ class Reservation extends Component {
         <td className="reservationvaleur">{client.adresse}</td>
         <td className="reservationvaleur">{client.mobile}</td>
         <td className="reservationvaleur">Chambre {chambre.numero}</td>
-        <td className="reservationvaleur">{prix} $</td>
+        <td className="reservationvaleur">{prix} $ </td>
         <td>
           <img
             src={chambre.logo}

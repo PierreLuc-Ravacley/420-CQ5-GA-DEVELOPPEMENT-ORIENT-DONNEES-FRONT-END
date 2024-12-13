@@ -8,7 +8,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 10vh;
+  height: 10vh; 
   z-index: 1000;
   box-sizing: border-box;
   transition: transform 0.3s ease-in-out;
@@ -47,18 +47,24 @@
   transform: scale(1.1);
 }
 
-main {
-  padding-top: 50vh;
+main { 
+  margin-top: 50vh;
 }
 
 .dashboard-container {
-  max-width: 70vw;
+  max-width: 100vw;
   margin: 0 auto 4vh auto;
-  padding: 1vw;
+  padding: 3vw;
+  padding-top: 0.3vw;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex; 
+  flex-direction: column;
+  margin-top: 5vh; 
+  margin-bottom: 2vh; 
 }
+
 
 .dashboard-container h1 {
   font-size: 1.7rem;
@@ -77,20 +83,30 @@ main {
   margin-bottom: 2vh;
 }
 
-.button-blue,
+
 .button-info,
 .button-danger {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 1vw 2vw;
+  padding: 0.5vw 2vw;
   font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
   margin: 0 0.5vw;
 }
-
+.button-blue{
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.55vw 2.5vw;
+  font-size: rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin: 0 1vw;
+}
 .button-info {
   background-color: #ff9f00;
 }
@@ -125,6 +141,11 @@ main {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.reservation-container {
+  margin-top: 2vh; 
+  padding: 1vw;
 }
 
 .ListeReservation {
@@ -173,11 +194,11 @@ main {
 
 .add-reservation-form {
   max-width: 70vw;
-  margin: 4vh auto;
+  margin: 4vh auto; 
   padding: 2vw;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0 , 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -237,7 +258,7 @@ main {
   justify-content: center;
   align-items: center;
   margin-top: 2vh;
-  margin-bottom: 2vh;
+  margin-bottom: 2vh 0;
 }
 
 .search-container input {
@@ -280,8 +301,13 @@ main {
 }
 
 .edit-button {
-  background-color: #ffc107;
-  color: #000;
+  background-color: #ffc107; 
+  color: #000; 
+  padding: 0.5vw 1vw;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .edit-button:hover {
@@ -290,15 +316,73 @@ main {
 }
 
 .delete-button {
-  background-color: #dc3545;
-  color: #fff;
+  background-color: #dc3545; 
+  color: #fff; 
+  padding: 0.5vw 1vw;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .delete-button:hover {
   background-color: #c82333;
   transform: scale(1.05);
 }
+.edit-reservation-form {
+  max-width: 70vw;
+  margin: 4vh auto; 
+  padding: 2vw;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.edit-reservation-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1vh;
+  text-align: center;
+}
+
+.form-group {
+  width: 85%;
+  margin-bottom: 1vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5vh;
+  font-size: 1rem;
+  color: #333;
+}
+
+.edit-reservation-form input {
+  padding: 1vw;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.button-update {
+  width: 100%;
+  padding: 1vw;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1vh;
+}
+
+.button-update:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
 @media (max-width: 768px) {
   .header-logo {
     max-width: 15vw;

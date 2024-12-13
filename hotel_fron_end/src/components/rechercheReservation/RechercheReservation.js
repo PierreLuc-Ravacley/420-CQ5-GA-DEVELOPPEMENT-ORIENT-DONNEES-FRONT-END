@@ -25,8 +25,12 @@ const DashboardWithReservations = () => {
       type_chambre: ""
     }
   });
-  const [showForm, setShowForm] = useState(false); // État pour contrôler l'affichage du formulaire
-
+  const [showForm, setShowForm] = useState(false);
+  const [paddingTop, setPaddingTop] = useState("10vh");
+  const [reservationToEdit, setReservationToEdit] = useState(null);
+  const [idReservation, setIdReservation] = useState("");
+  const [reservationTrouvee, setReservationTrouvee] = useState(null);
+  const [showReservations, setShowReservations] = useState(false);
   // Retrieve and parse the user from sessionStorage
   const user = (() => {
     try {
@@ -45,30 +49,49 @@ const DashboardWithReservations = () => {
 
   // Handle disconnect logic
   const handleDisconnect = () => {
-    sessionStorage.removeItem("user"); // Clear user data
-    navigate("/"); // Redirect to login page
+    sessionStorage.removeItem("user");
+    navigate("/");
   };
 
-  // Mock functions for fetching and clearing reservations
+  const rechercherReservation = (id) => {
+    const reservation = reservations.find((r) => r.id === parseInt(id));
+    if (reservation) {
+      setReservationTrouvee(reservation);
+      setShowReservations(true);
+    } else {
+      setReservationTrouvee(null);
+    }
+  };
+
   const rechercheReservations = () => {
     setReservations(mockReservations);
     setReservationsDisponible(mockReservationsDisponible);
+    setShowReservations(true);
+    setPaddingTop("90vh");
   };
 
   const effacerReservations = () => {
     setReservations([]);
     setReservationsDisponible([]);
+    setIdReservation(""); 
+    setReservationTrouvee(null); 
+    setShowReservations(false); 
+    
   };
 
   // Function to handle adding a new reservation
   const handleAddReservation = () => {
-    const newId = reservations.length + 1; // Simple ID generation
+    const newId = reservations.length + 1;
     const reservationToAdd = {
       ...newReservation,
       id_reservation: newId,
-      client: { prenom: user.client?.prenom || "User " }, // Assuming the client is the logged-in user
+      client: { prenom: user.client?.prenom || "User" },
     };
     setReservations([...reservations, reservationToAdd]);
+    resetNewReservation();
+  };
+
+  const resetNewReservation = () => {
     setNewReservation({
       fk_id_client: "",
       fk_id_chambre: "",
@@ -82,49 +105,65 @@ const DashboardWithReservations = () => {
         autre_informations: "",
         type_chambre: ""
       }
-    }); // Reset form
-    setShowForm(false); // Hide form after adding
+    });
+    setShowForm(false);
+    setPaddingTop("100vh");
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewReservation((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleModifierReservation = (reservation) => {
-    // Code pour modifier la réservation
-    console.log('Modifier la réservation', reservation);
+    setPaddingTop("100vh");
   };
 
-  const handleSupprimerReservation = (reservation) => {
-    // Code pour supprimer la réservation
-    console.log('Supprimer la réservation', reservation);
+  const handleModifierReservation = (updatedReservation) => {
+    setReservations((prevReservations) =>
+      prevReservations.map((reservation) =>
+        reservation.id === updatedReservation.id ? updatedReservation : reservation
+      )
+    );
+    setReservationsDisponible((prevReservations) =>
+      prevReservations.map((reservation) =>
+        reservation.id === updatedReservation.id ? updatedReservation : reservation
+      )
+    );
   };
+
+  const handleUpdateReservation = (updatedReservation) => {
+    const updatedReservations = reservations.map((r) =>
+      r.id === updatedReservation.id ? { ...r, ...updatedReservation } : r
+    );
+    setReservations(updatedReservations);
+    setReservationToEdit(null);
+    setPaddingTop("100vh");
+ };
+
+  const handleSupprimerReservation = (reservation) => {
+    const updatedReservations = reservations.filter(r => r.id !== reservation.id);
+    setReservations(updatedReservations);
+    console.log('Réservation supprimée', reservation);
+  };
+
   const handleNestedChange = (e, nestedKey) => {
     const { name, value } = e.target;
 
     if (nestedKey === 'chambre') {
-      const chambreKey = name; // Get the key of the chambre object
+      const chambreKey = name;
       setNewReservation((prev) => ({
         ...prev,
         chambre: { ...prev.chambre, [chambreKey]: value }
       }));
     }
+    setPaddingTop("40vh");
   };
-
-  const [idReservation, setIdReservation] = useState("");
-  const [reservationTrouvee, setReservationTrouvee] = useState(null);
-  
-  const rechercherReservation = (id) => {
-    // Search for the reservation in the database or in an array of reservations
-    const reservation = reservations.find((r) => r.id === id);
-    if (reservation) {
-      setReservationTrouvee(reservation);
-    } else {
-      setReservationTrouvee(null);
+  useEffect(() => {
+    if (reservations.length > 0 || reservationsDisponible.length > 0) {
+      setShowReservations(true);
     }
-  };
+  }, [reservations, reservationsDisponible]);
+  
 
-  if (!user) return null; // Prevent rendering while redirecting
+  if (!user) return null;
 
   return (
     <>
@@ -134,19 +173,26 @@ const DashboardWithReservations = () => {
           alt="Hotel Logo"
           className="header-logo"
         />
-        <span>Welcome, {user.client?.prenom || "User "}!</span>
+        <span>Welcome, {user.client?.prenom || "User        "}!</span>
         <button onClick={handleDisconnect} className="header-button">
           Déconnexion
         </button>
       </header>
-      <main>
+      <main style={{ paddingTop: paddingTop }}>
         <section className="dashboard-container">
           <h1>Dashboard</h1>
           <p>Email: {user.client?.courriel || "N/A"}</p>
           <div className="button-container">
-            <button onClick={() => setShowForm(!showForm)} className="button-green">
-              {showForm ? "Annuler" : "Ajouter une Réservation"}
-            </button>
+          <button
+  onClick={() => {
+    setShowForm(!showForm);
+    setPaddingTop("80vh");
+  }}
+  className="button-green"
+>
+  {showForm ? "Annuler" : "Ajouter une Réservation"}
+</button>
+
             <button onClick={rechercheReservations} className="button-info">
               Afficher les Réservations
             </button>
@@ -154,25 +200,6 @@ const DashboardWithReservations = () => {
               Fermer 
             </button>
           </div>
-          <div className="search-container">
-            <input
-              type="text"
-              placeholder="Entrez l'ID de réservation"
-              value={idReservation}
-              onChange={(e) => setIdReservation(e.target.value)}
-            />
-            <button
-              className="button-blue"
-              onClick={() => rechercherReservation(idReservation)}
-            >
-              Rechercher une réservation
-            </button>
-          </div>
-          {reservationTrouvee && (
-            <p className="reservation-result">
-              Réservation trouvée pour {reservationTrouvee.client.prenom} {reservationTrouvee.client.nom} du {reservationTrouvee.du} au {reservationTrouvee.au}
-            </p>
-          )}
         </section>
 
         {showForm && (
@@ -185,7 +212,8 @@ const DashboardWithReservations = () => {
               onChange={handleChange}
               placeholder="ID du client"
             />
-            <input type="number"
+            <input
+              type="number"
               name="fk_id_chambre"
               value={newReservation.fk_id_chambre}
               onChange={handleChange}
@@ -246,27 +274,97 @@ const DashboardWithReservations = () => {
             </button>
           </section>
         )}
+        {reservationToEdit && (
+          <section className="edit-reservation-form">
+            <h2>Modifier la Réservation</h2>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleUpdateReservation(reservationToEdit);
+            }}>
+              <div className="form-group">
+                <label>Date de début :</label >
+                <input
+                  type="date"
+                  value={reservationToEdit.dateDebut}
+                  onChange={(e) =>
+                    setReservationToEdit({ ...reservationToEdit, dateDebut: e.target.value })
+                  }
+                />
+              </div>
+              <div className="form-group">
+                <label>Date de fin :</label>
+                <input
+                  type="date"
+                  value={reservationToEdit.dateFin}
+                  onChange={(e) =>
+                    setReservationToEdit({ ...reservationToEdit, dateFin: e.target.value })
+                  }
+                />
+              </div>
+              <div className="form-group">
+                <label>Prix par jour :</label>
+                <input
+                  type="number"
+                  value={reservationToEdit.prixParJour}
+                  onChange={(e) =>
+                    setReservationToEdit({ ...reservationToEdit, prixParJour: e.target.value })
+                  }
+                />
+              </div>
+              <button type="submit" className="button-update">Sauvegarder</button>
+            </form>
+          </section>
+        )}
 
 <section className="reservation-container">
-      <div className="tables-container">
-        {reservations.length > 0 && (
-          <ListeReservation
-            title="Liste des Réservations"
-            reservations={reservations}
-            onModifierReservation={handleModifierReservation}
-            onSupprimerReservation={handleSupprimerReservation}
-          />
-        )}
-        {reservationsDisponible.length > 0 && (
-          <ListeReservation
-            title="Liste des Réservations Disponibles"
-            reservations={reservationsDisponible}
-            onModifierReservation={handleModifierReservation}
-            onSupprimerReservation={handleSupprimerReservation}
-          />
-        )}
+  {showReservations && (
+    <div className="tables-container">
+      <h3>Rechercher une réservation</h3>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Entrez l'ID de réservation"
+          value={idReservation}
+          onChange={(e) => setIdReservation(e.target.value)}
+        />
+        <button
+          className="button-blue"
+          onClick={() => rechercherReservation(idReservation)}
+        >
+          Rechercher
+        </button>
       </div>
-    </section>
+      {reservationTrouvee ? (
+        <ListeReservation
+          title="Réservation Trouvée"
+          reservations={[reservationTrouvee]}
+          onModifierReservation={handleModifierReservation}
+          onSupprimerReservation={handleSupprimerReservation}
+        />
+      ) : (
+        idReservation && (
+          <p>Aucune réservation trouvée pour cette ID.</p>
+        )
+      )}
+      {reservations.length > 0 && (
+        <ListeReservation
+          title="Liste des Réservations"
+          reservations={reservations}
+          onModifierReservation={handleModifierReservation}
+          onSupprimerReservation={handleSupprimerReservation}
+        />
+      )}
+      {reservationsDisponible.length > 0 && (
+        <ListeReservation
+          title="Liste des Réservations Disponibles"
+          reservations={reservationsDisponible}
+          onModifierReservation={handleModifierReservation}
+          onSupprimerReservation={handleSupprimerReservation}
+        />
+      )}
+    </div>
+  )}
+</section>
       </main>
     </>
   );
