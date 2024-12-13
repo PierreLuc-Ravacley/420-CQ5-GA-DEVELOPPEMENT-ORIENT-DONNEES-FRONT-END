@@ -16,6 +16,7 @@ button {
   font-size: 16px;
   border: none;
   border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transition pour l'effet de survol */
 }
 
 .button-info {
