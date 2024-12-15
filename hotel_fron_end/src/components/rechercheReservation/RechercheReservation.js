@@ -4,6 +4,7 @@ import ListeReservation from "./ListeReservation";
 import logoChambre from "../../logo/chambreDouble.jpeg";
 import logoChambre2 from "../../logo/chambreKing.jpeg";
 import "./../../Style/reservationStyle.css";
+import instance from "../../axiosConfig";
 
 const DashboardWithReservations = () => {
   const navigate = useNavigate();
@@ -23,6 +24,12 @@ const DashboardWithReservations = () => {
       disponible_reservation: false,
       autre_informations: "",
       type_chambre: ""
+    },
+    client: {
+      prenom: "",
+      nom: "",
+      adresse: "",
+      mobile: ""
     }
   });
   const [showForm, setShowForm] = useState(false);
@@ -54,18 +61,42 @@ const DashboardWithReservations = () => {
   };
 
   const rechercherReservation = (id) => {
-    const reservation = reservations.find((r) => r.id === parseInt(id));
-    if (reservation) {
-      setReservationTrouvee(reservation);
-      setShowReservations(true);
-    } else {
-      setReservationTrouvee(null);
-    }
+    const criteres = {
+      idReservation: id,
+      idClient: "",
+      idChambre: "",
+      nom: "",
+      prenom: ""
+    };
+  
+    instance.post("/rechercherReservation", criteres)
+      .then((response) => {
+        console.log("Réponse API :", response.data);
+        setReservations(response.data); // Met à jour l'état des réservations
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la recherche :", error);
+      });
   };
+  
+  // Utilisation d'un effet pour détecter les changements dans `reservations`
+  useEffect(() => {
+    if (idReservation && Array.isArray(reservations)) {
+      const reservation = reservations.find(
+        (r) => r.id_reservation.toUpperCase() === idReservation.toUpperCase()
+      );
+      if (reservation) {
+        setReservationTrouvee(reservation);
+        setShowReservations(true);
+      } else {
+        setReservationTrouvee(null);
+      }
+    }
+  }, [reservations, idReservation]);
 
   const rechercheReservations = () => {
-    setReservations(mockReservations);
-    setReservationsDisponible(mockReservationsDisponible);
+    resetNewReservation();
+    //setReservationsDisponible(mockReservationsDisponible);
     setShowReservations(true);
     setPaddingTop("90vh");
   };
@@ -81,13 +112,21 @@ const DashboardWithReservations = () => {
 
   // Function to handle adding a new reservation
   const handleAddReservation = () => {
-    const newId = reservations.length + 1;
-    const reservationToAdd = {
-      ...newReservation,
-      id_reservation: newId,
-      client: { prenom: user.client?.prenom || "User" },
-    };
-    setReservations([...reservations, reservationToAdd]);
+    const criteres = {
+      "id_reservation": null,
+      "fk_id_client": newReservation.fk_id_client,
+      "fk_id_chambre": newReservation.fk_id_chambre,
+      "dateDebut": newReservation.dateDebut,
+      "dateFin": newReservation.dateFin,
+      "prixParJour": newReservation.prixParJour,
+      "infoReservation": newReservation.infoReservation,
+      "chambre": null,
+      "client": null
+    }
+    instance.post("/creerReservation", criteres)
+    .then(setReservations)
+    .catch(console.log);
+    //setReservations([...reservations, reservationToAdd]);
     resetNewReservation();
   };
 
@@ -104,7 +143,13 @@ const DashboardWithReservations = () => {
         disponible_reservation: false,
         autre_informations: "",
         type_chambre: ""
-      }
+      },
+      client: {
+        prenom: "",
+        nom: "",
+        adresse: "",
+        mobile: "",
+      },
     });
     setShowForm(false);
     setPaddingTop("100vh");
@@ -206,14 +251,14 @@ const DashboardWithReservations = () => {
           <section className="add-reservation-form">
             <h2>Ajouter une Réservation</h2>
             <input
-              type="number"
+              type="text"
               name="fk_id_client"
               value={newReservation.fk_id_client}
               onChange={handleChange}
               placeholder="ID du client"
             />
             <input
-              type="number"
+              type="text"
               name="fk_id_chambre"
               value={newReservation.fk_id_chambre}
               onChange={handleChange}

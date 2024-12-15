@@ -136,10 +136,10 @@ const ListeReservation = ({ title, reservations, onModifierReservation, onSuppri
               <td>
                 {reservation.client.prenom} {reservation.client.nom}
               </td>
-              <td>{reservation.chambre.numero}</td>
-              <td>{reservation.du}</td>
-              <td>{reservation.au}</td>
-              <td>{reservation.prix}</td>
+              <td>{reservation.chambre.numero_chambre}</td>
+              <td>{reservation.dateDebut}</td>
+              <td>{reservation.dateFin}</td>
+              <td>{reservation.prixParJour}</td>
               <td>
                 <button className="edit-button" onClick={() => handleModifier(reservation)}>Modifier</button>
                 <button className="delete-button" onClick={() => handleSupprimer(reservation)}>Supprimer</button>
